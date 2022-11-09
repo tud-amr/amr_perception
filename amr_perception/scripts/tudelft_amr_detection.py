@@ -19,11 +19,11 @@ if ROS:
 models_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/models'
 ort_sess = ort.InferenceSession(f'{models_dir}/yolov7-tiny.onnx', providers=['CUDAExecutionProvider'])
 
-cam5 = Realsense(width=640, height=480, depth=True, device='215122255929')
-cam4 = Realsense(width=640, height=480, depth=True, device='215122255934')
-cam3 = Realsense(width=640, height=480, depth=True, device='215122254701')
-cam2 = Realsense(width=640, height=480, depth=True, device='114222251376')
-cam1 = Realsense(width=640, height=480, depth=True, device='215122255869')
+cam5 = Realsense(width=640, height=480, depth=True, device='044422250533')
+cam4 = Realsense(width=640, height=480, depth=True, device='046122251376')
+cam3 = Realsense(width=640, height=480, depth=True, device='046122251429')
+cam2 = Realsense(width=640, height=480, depth=True, device='046122250684')
+cam1 = Realsense(width=640, height=480, depth=True, device='037322251435')
 providers = [cam1, cam2, cam3, cam4, cam5]
 
 for frames in combine(*providers):
@@ -48,7 +48,7 @@ for frames in combine(*providers):
     boxes3d = [box2d.to3d(depth_frames[box2d.batch_id], providers[box2d.batch_id]._depth_intr) for box2d in boxes2d]
 
     # filter iou overlap
-    boxes3d = filter_iou3d(boxes3d)    
+    # boxes3d = filter_iou3d(boxes3d)    
 
     if ROS: 
         ros_connector.publishBoundingBoxes3d(boxes3d)
