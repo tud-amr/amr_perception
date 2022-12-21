@@ -8,7 +8,7 @@ with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
   long_description = f.read()
 
 setup(name='arm_perception',
-      version='0.0.1',
+      version='0.1.0',
       description='TUDelft AMR group perception pipeline',
       author='Chadi Salmi, Khaldon Araffa',
       license='MIT',
@@ -20,7 +20,7 @@ setup(name='arm_perception',
         "License :: OSI Approved :: MIT License"
       ],
       install_requires=[
-          'easy_inference==0.0.4',
+          'easy_inference==0.1.1',
           'onnxruntime-gpu',
           'pyyaml',
           'rospkg'

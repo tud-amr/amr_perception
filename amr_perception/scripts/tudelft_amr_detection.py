@@ -8,12 +8,12 @@ import numpy as np
 import cv2
 import os
 
-SHOW = True
-ROS = True
+ROS = os.getenv("ROS", 0)
+SHOW = os.getenv("SHOW", 0)
 
 if ROS:
     from easy_inference.utils.ros_connector import RosConnector
-    ros_connector = RosConnector(fixed_frame="map")
+    ros_connector = RosConnector(fixed_frame="base_link", num_cameras=5)
 
 # ort.set_default_logger_severity(0)
 models_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/models'
@@ -27,8 +27,8 @@ cam1 = Realsense(width=640, height=480, depth=True, device='215122255869')
 providers = [cam1, cam2, cam3, cam4, cam5]
 
 for frames in combine(*providers):
-    rgb_frames = np.stack([f[1] for f in frames])
-    depth_frames = np.stack([f[0] for f in frames])
+    rgb_frames = np.stack([f[0] for f in frames])
+    depth_frames = np.stack([f[1] for f in frames])
 
     input = rgb_frames.transpose((0, 3, 1, 2))
     input = np.ascontiguousarray(input)
