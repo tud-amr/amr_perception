@@ -48,7 +48,7 @@ for frames in combine(*providers):
     boxes3d = [box2d.to3d(depth_frames[box2d.batch_id], providers[box2d.batch_id]._depth_intr) for box2d in boxes2d]
 
     # filter iou overlap
-    boxes3d = filter_iou3d(boxes3d)    
+    # boxes3d = filter_iou3d(boxes3d)    
 
     if ROS: 
         ros_connector.publishBoundingBoxes3d(boxes3d)

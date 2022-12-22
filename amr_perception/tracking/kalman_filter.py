@@ -2,7 +2,7 @@ import numpy as np
 
 
 class KalmanFilter:
-	def __init__(self, init_state, frequency, state_variance=1, measurement_variance=1, method="Velocity"):
+	def __init__(self, init_state, frequency, state_variance=1, measurement_variance=0.1, method="Velocity"):
 		self.method = method
 		self.stateVariance = state_variance
 		self.measurementVariance = measurement_variance

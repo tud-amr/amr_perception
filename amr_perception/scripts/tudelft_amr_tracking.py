@@ -1,5 +1,6 @@
 import numpy as np
 import rospy
+import math
 from copy import copy
 from jsk_recognition_msgs.msg import BoundingBoxArray
 from spencer_tracking_msgs.msg import TrackedPerson, TrackedPersons
@@ -10,7 +11,7 @@ class Detections:
     def __init__(self):
         self.boxes = BoundingBoxArray()
         self.boxes.boxes = []
-        rospy.Subscriber('/detections3D', BoundingBoxArray, self.cb, queue_size=1)
+        rospy.Subscriber('/person_detection/detections3D', BoundingBoxArray, self.cb, queue_size=1)
 
     def cb(self, msg):
         self.boxes = msg
@@ -24,7 +25,7 @@ class Detections:
 
 def main():
     rospy.init_node("person_tracker")
-    pub_viz = rospy.Publisher("tracks", TrackedPersons, queue_size=10)
+    pub_viz = rospy.Publisher("~tracks", TrackedPersons, queue_size=10)
 
     f = 10
     tracker = Tracker(
@@ -48,10 +49,12 @@ def main():
             for center in centers:
                 if any([np.linalg.norm(center - fc) < 0.5 for fc in filtered_centers]):
                     continue
+                if any([math.isnan(c) for c in center]):
+                    print("skipping is nan")
+                    continue
                 filtered_centers.append(center)
 
             if len(filtered_centers) > 0:
-                print(filtered_centers)
                 tracker.update(np.array(filtered_centers))
 
             persons = TrackedPersons()
